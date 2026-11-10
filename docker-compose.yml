@@ -1,0 +1,26 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: webhooks
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./migrations:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 2s
+      retries: 10
+
+  app:
+    build: .
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/webhooks?sslmode=disable
+      WORKERS: 4
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
