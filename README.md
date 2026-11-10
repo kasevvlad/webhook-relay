@@ -1,5 +1,7 @@
 # webhook-relay
 
+[![tests](https://github.com/kasevvlad/webhook-relay/actions/workflows/tests.yml/badge.svg)](https://github.com/kasevvlad/webhook-relay/actions/workflows/tests.yml)
+
 A small webhook delivery service written in Go. My learning project for goroutines, `database/sql` and building HTTP services with the standard library.
 
 Your app sends an event to the service, the service delivers it to every subscriber with an HMAC signature, retries failed deliveries with exponential backoff, and keeps the ones that never succeeded so they can be retried by hand.
